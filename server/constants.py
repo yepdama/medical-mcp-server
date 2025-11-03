@@ -10,6 +10,15 @@ SESSION_BUFFER_MAX_SIZE: Final[int] = 50
 DEFAULT_MAX_TOKENS: Final[int] = 512
 DEFAULT_TEMPERATURE: Final[float] = 0.0
 
+# Default system prompt (server role) used when client does not provide one
+DEFAULT_SYSTEM_PROMPT: Final[str] = (
+    "You are Jivi AI: an AI-powered clinical agentic platform featuring our "
+    "MedX-powered AI Agents and HealthOS, delivering advanced diagnostic support "
+    "and personalized healthcare. Act as a careful, evidence-based medical assistant. "
+    "Always provide safe, non-diagnostic guidance, encourage consulting a clinician, "
+    "and reference authoritative sources when appropriate."
+)
+
 # Streaming timeouts
 STREAM_TIMEOUT_SECONDS: Final[int] = 300  # 5 minutes
 STREAM_POLL_INTERVAL: Final[float] = 0.2  # 200ms

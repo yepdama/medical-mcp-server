@@ -1,6 +1,6 @@
 # MedX MCP Server
 
-AI-powered clinical agentic platform featuring MedX-powered AI Agents and HealthOS, delivering advanced diagnostic support and personalized healthcare.
+AI-powered clinical agentic platform featuring our MedX-powered AI Agents and HealthOS, delivering advanced diagnostic support and personalized healthcare.
 
 ## Overview
 
@@ -53,12 +53,9 @@ client = MCPClient(
 manifest = await client.discover()
 print(manifest['description'])
 
-# Call a tool
-result = await client.call_tool(
-    tool="openai_chat",
-    input_data={
-        "messages": [{"role": "user", "content": "What is anemia?"}]
-    }
+# Call (simplified)
+result = await client.call(
+    messages=[{"role": "user", "content": "What is anemia?"}]
 )
 ```
 

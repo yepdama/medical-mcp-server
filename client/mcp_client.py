@@ -94,19 +94,19 @@ class MCPClient:
     
     async def execute(
         self,
-        tool: str,
-        input_data: Dict[str, Any],
+        messages: List[Dict[str, Any]],
         session_id: Optional[str] = None,
-        request_id: Optional[str] = None
+        request_id: Optional[str] = None,
+        max_tokens: Optional[int] = None,
     ) -> Dict[str, Any]:
         """
         Execute a tool asynchronously. Returns call_id immediately.
         
         Args:
-            tool: Tool name (e.g., "openai_chat")
-            input_data: Tool input parameters
+            messages: Chat messages [{role, content}]
             session_id: Optional session identifier
             request_id: Optional request ID for idempotency
+            max_tokens: Optional max tokens for response
         
         Returns:
             Dictionary with call_id and status
@@ -124,14 +124,15 @@ class MCPClient:
         if not request_id:
             request_id = str(uuid.uuid4())
         
-        payload = {
-            "tool": tool,
-            "input": input_data,
-            "request_id": request_id
+        payload: Dict[str, Any] = {
+            "messages": messages,
+            "request_id": request_id,
         }
-        
         if session_id:
             payload["session_id"] = session_id
+        if max_tokens is not None:
+            payload.setdefault("input", {})
+            payload["input"]["max_tokens"] = max_tokens
         
         try:
             async with httpx.AsyncClient(timeout=self.timeout) as client:
@@ -191,12 +192,12 @@ class MCPClient:
         except httpx.RequestError as e:
             raise MCPClientError(f"Network error: {e}")
     
-    async def call_tool(
+    async def call(
         self,
-        tool: str,
-        input_data: Dict[str, Any],
+        messages: List[Dict[str, Any]],
         session_id: Optional[str] = None,
-        wait_for_completion: bool = True
+        wait_for_completion: bool = True,
+        max_tokens: Optional[int] = None,
     ) -> str:
         """
         Execute a tool and wait for completion (convenience method).
@@ -221,9 +222,9 @@ class MCPClient:
         """
         # Execute tool
         execute_result = await self.execute(
-            tool=tool,
-            input_data=input_data,
-            session_id=session_id
+            messages=messages,
+            session_id=session_id,
+            max_tokens=max_tokens,
         )
         call_id = execute_result["call_id"]
         

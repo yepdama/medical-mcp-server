@@ -4,7 +4,7 @@ MCP Server - Main FastAPI application for medical conversational AI.
 import os
 import json
 import asyncio
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 from fastapi import FastAPI, BackgroundTasks, Depends
 from fastapi.responses import JSONResponse
 from sse_starlette.sse import EventSourceResponse
@@ -16,6 +16,7 @@ from server.constants import (
     SESSION_BUFFER_MAX_SIZE,
     DEFAULT_MAX_TOKENS,
     DEFAULT_TEMPERATURE,
+    DEFAULT_SYSTEM_PROMPT,
     STREAM_TIMEOUT_SECONDS,
     STREAM_POLL_INTERVAL,
     STATUS_PENDING,
@@ -46,7 +47,7 @@ logger = get_logger("mcp_server")
 # FastAPI app initialization
 app = FastAPI(
     title="MedX MCP Server",
-    description="AI-powered clinical agentic platform featuring MedX-powered AI Agents and HealthOS, delivering advanced diagnostic support and personalized healthcare.",
+    description="AI-powered clinical agentic platform featuring our MedX-powered AI Agents and HealthOS, delivering advanced diagnostic support and personalized healthcare.",
     version="0.1.0"
 )
 
@@ -102,9 +103,18 @@ def _append_session_event(session_id: Optional[str], event: Dict[str, Any]) -> N
 
 
 class ExecuteRequest(BaseModel):
-    """Request model for tool execution."""
-    tool: str
-    input: Dict[str, Any]
+    """Request model for tool execution.
+
+    Backwards compatible: supports either legacy shape with `tool` and `input`,
+    or simplified shape providing `messages` at top-level.
+    """
+    # Legacy fields (ignored for tool selection; input remains supported)
+    tool: Optional[str] = None
+    input: Optional[Dict[str, Any]] = None
+
+    # Simplified fields
+    messages: Optional[List[Dict[str, Any]]] = None
+
     session_id: Optional[str] = None
     request_id: Optional[str] = None  # For idempotency
     metadata: Dict[str, Any] = {}
@@ -113,10 +123,16 @@ class ExecuteRequest(BaseModel):
 @app.get("/mcp/manifest")
 async def manifest(token: str = Depends(verify_auth)):
     """
-    Get MCP server manifest (available tools).
+    Get MCP server manifest (available tools and role).
+    
+    The manifest includes:
+    - role: The server's primary role/purpose
+    - description: Detailed description
+    - capabilities: List of capabilities
+    - tools: Available tools
     
     Returns:
-        JSONResponse: Server manifest with available tools
+        JSONResponse: Server manifest with role, description, capabilities, and tools
     """
     logger.info("Manifest requested")
     # manifest.json is in project root, not in server/
@@ -162,10 +178,21 @@ async def execute(
                 "status": existing["status"]
             })
 
+    # Force tool and model to server defaults
+    forced_tool = "openai_chat"
+    # Build input payload from either legacy `input` or simplified `messages`
+    if req.input and isinstance(req.input, dict):
+        input_payload = dict(req.input)
+    else:
+        input_payload = {"messages": (req.messages or [])}
+    # Strip user-provided model if present; model is enforced later
+    if isinstance(input_payload, dict) and "model" in input_payload:
+        input_payload.pop("model", None)
+
     # Create new call
     call_id = _call_registry_service.create_call(
-        req.tool,
-        req.input,
+        forced_tool,
+        input_payload,
         req.session_id,
         req.request_id
     )
@@ -177,7 +204,7 @@ async def execute(
 
     # Kick off tool execution as an asyncio task
     task = asyncio.create_task(
-        run_tool_call(call_id, req.tool, req.input, req.session_id, req.metadata, ai_service)
+        run_tool_call(call_id, forced_tool, input_payload, req.session_id, req.metadata, ai_service)
     )
     TASKS[call_id] = task
     
@@ -217,9 +244,18 @@ async def run_tool_call(
         })
 
         if tool == "openai_chat":
-            # Extract parameters
-            model = input_data.get("model") or DEFAULT_OPENAI_MODEL
+            # Extract parameters (force model to server default)
+            model = DEFAULT_OPENAI_MODEL
             messages = input_data.get("messages", [])
+            # Inject default system prompt if not provided
+            has_system = any(
+                isinstance(m, dict) and m.get("role") == "system" for m in messages
+            )
+            if not has_system:
+                messages = [{
+                    "role": "system",
+                    "content": DEFAULT_SYSTEM_PROMPT,
+                }] + messages
             max_tokens = input_data.get("max_tokens", DEFAULT_MAX_TOKENS)
 
             # Stream from OpenAI

@@ -5,6 +5,7 @@
 This guide explains how AI agents discover and use your MCP server capabilities.
 
 **Key Discovery Method:** Agents call `GET /mcp/manifest` to discover:
+- Server role (primary purpose/functionality)
 - What the server can do (description & capabilities)
 - Available tools (functions they can call)
 - Server version and metadata
@@ -24,6 +25,7 @@ This guide explains how AI agents discover and use your MCP server capabilities.
        ▼
 ┌─────────────────────────┐
 │  MCP Server Response    │
+│  - Server role          │
 │  - Server description   │
 │  - Capabilities list    │
 │  - Available tools      │
@@ -51,6 +53,7 @@ curl -H "Authorization: Bearer super-secret-token" \
 {
   "server_name": "medx-mcp-server",
   "version": "0.1",
+  "role": "AI-powered clinical agentic platform featuring our MedX-powered AI Agents and HealthOS, delivering advanced diagnostic support and personalized healthcare.",
   "description": "AI-powered clinical agentic platform featuring our MedX-powered AI Agents and HealthOS, delivering advanced diagnostic support and personalized healthcare.",
   "capabilities": [
     "Advanced diagnostic support",
@@ -146,7 +149,7 @@ async def discover_mcp_server(server_url: str, auth_token: str):
 # Available tools: ['openai_chat']
 ```
 
-### Step 2: Framework Registers Tools
+### Step 2: Execute Using Simplified Request
 
 The framework automatically converts the manifest into tool definitions that the agent can use:
 
@@ -176,19 +179,24 @@ agent = AgentExecutor.from_agent_and_tools(
 
 ### Step 3: Agent Uses Tools
 
-```python
-# Agent just calls tools - framework handles REST API calls internally
-result = await agent.invoke({
-    "input": "What are symptoms of anemia?",
-    "tools": ["openai_chat"]  # Framework handles: POST /mcp/execute + stream
-})
+```bash
+curl -X POST \
+  -H "Authorization: Bearer super-secret-token" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "messages": [
+      {"role": "user", "content": "What are symptoms of anemia?"}
+    ],
+    "session_id": "demo-session-1",
+    "request_id": "req-demo-123"
+  }' \
+  http://localhost:8000/mcp/execute
 ```
 
-**Behind the scenes, framework does:**
-1. `POST /mcp/execute` → Get `call_id`
+**Behind the scenes:**
+1. `POST /mcp/execute` → Get `call_id` (server enforces `openai_chat` + `gpt-4o-mini`)
 2. `GET /mcp/stream/{call_id}` → Stream results
-3. Handle errors, timeouts, cancellation
-4. Return final result to agent
+3. Server injects default Jivi AI system prompt if missing
 
 ### Benefits
 
@@ -292,8 +300,9 @@ Your MCP server manifest (`manifest.json`) includes:
 {
   "server_name": "medx-mcp-server",           // Server identifier
   "version": "0.1",                            // Server version
-  "description": "...",                       // What the server does (NEW!)
-  "capabilities": [...],                      // List of capabilities (NEW!)
+  "role": "...",                              // Server's primary role/purpose
+  "description": "...",                       // Detailed description
+  "capabilities": [...],                      // List of capabilities
   "tools": [                                  // Available tools
     {
       "id": "tool_name",
@@ -309,7 +318,8 @@ Your MCP server manifest (`manifest.json`) includes:
 
 - **`server_name`**: Unique identifier for the server
 - **`version`**: Server API version
-- **`description`**: High-level description of what the server provides (shown to agents/users)
+- **`role`**: The server's primary role/purpose (e.g., "AI-powered clinical agentic platform...")
+- **`description`**: Detailed description of what the server provides (shown to agents/users)
 - **`capabilities`**: Array of specific capabilities (used for capability matching)
 - **`tools`**: Array of callable tools with their parameters
 

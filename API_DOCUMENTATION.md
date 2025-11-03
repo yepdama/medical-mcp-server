@@ -118,6 +118,7 @@ curl -H "Authorization: Bearer super-secret-token" \
 {
   "server_name": "medx-mcp-server",
   "version": "0.1",
+  "role": "AI-powered clinical agentic platform featuring our MedX-powered AI Agents and HealthOS, delivering advanced diagnostic support and personalized healthcare.",
   "description": "AI-powered clinical agentic platform featuring our MedX-powered AI Agents and HealthOS, delivering advanced diagnostic support and personalized healthcare.",
   "capabilities": [
     "Advanced diagnostic support",
@@ -147,48 +148,36 @@ curl -H "Authorization: Bearer super-secret-token" \
 
 ---
 
-### Execute Tool
+### Execute (Simplified)
 
 #### POST `/mcp/execute`
-Execute a tool asynchronously. Returns immediately with a `call_id` that can be used to stream results.
+Execute the default tool asynchronously. Returns immediately with a `call_id` that can be used to stream results.
 
 **Authentication:** Required
 
-**Request Body:**
+**Request Body (Simplified):**
 ```json
 {
-  "tool": "openai_chat",
-  "input": {
-    "messages": [
-      {"role": "system", "content": "You are a medical assistant."},
-      {"role": "user", "content": "What are symptoms of anemia?"}
-    ],
-    "model": "gpt-4o-mini",
-    "max_tokens": 512
-  },
+  "messages": [
+    {"role": "user", "content": "What are symptoms of anemia?"}
+  ],
   "session_id": "patient-session-123",
-  "request_id": "unique-request-id-456",
-  "metadata": {}
+  "request_id": "unique-request-id-456"
 }
 ```
 
-**Request Fields:**
+**Request Fields (Simplified):**
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `tool` | string | ✅ Yes | Tool name to execute (e.g., "openai_chat") |
-| `input` | object | ✅ Yes | Tool-specific input parameters |
+| `messages` | array | ✅ Yes | Array of message objects with `role` and `content` |
 | `session_id` | string | ❌ No | Session identifier for conversation tracking |
 | `request_id` | string | ❌ No | Unique request ID for idempotency (recommended) |
 | `metadata` | object | ❌ No | Additional metadata (stored but not processed) |
 
-**Input Parameters for `openai_chat` tool:**
-
-| Field | Type | Required | Default | Description |
-|-------|------|----------|---------|-------------|
-| `messages` | array | ✅ Yes | - | Array of message objects with `role` and `content` |
-| `model` | string | ❌ No | "gpt-4o-mini" | OpenAI model to use |
-| `max_tokens` | integer | ❌ No | 512 | Maximum tokens in response |
+Notes:
+- The server always uses tool `openai_chat` and model `gpt-4o-mini`.
+- If no `system` message is provided, the server injects a default Jivi AI system prompt.
 
 **Message Object Format:**
 ```json
@@ -198,19 +187,15 @@ Execute a tool asynchronously. Returns immediately with a `call_id` that can be 
 }
 ```
 
-**Request Example:**
+**Request Example (Simplified):**
 ```bash
 curl -X POST \
   -H "Authorization: Bearer super-secret-token" \
   -H "Content-Type: application/json" \
   -d '{
-    "tool": "openai_chat",
-    "input": {
-      "messages": [
-        {"role": "user", "content": "Hello, what is anemia?"}
-      ],
-      "max_tokens": 256
-    },
+    "messages": [
+      {"role": "user", "content": "Hello, what is anemia?"}
+    ],
     "session_id": "patient-123",
     "request_id": "req-456"
   }' \
