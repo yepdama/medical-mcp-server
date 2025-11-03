@@ -1,0 +1,25 @@
+{
+  "server_name": "medx-mcp-server",
+  "version": "0.1",
+  "description": "AI-powered clinical agentic platform featuring our MedX-powered AI Agents and HealthOS, delivering advanced diagnostic support and personalized healthcare.",
+  "capabilities": [
+    "Advanced diagnostic support",
+    "Personalized healthcare recommendations",
+    "Clinical decision support",
+    "AI-powered medical consultations"
+  ],
+  "tools": [
+    {
+      "id": "openai_chat",
+      "name": "openai_chat",
+      "description": "Call OpenAI chat models (gpt-4o-mini default).",
+      "inputs": {
+        "messages": "array of {role, content}",
+        "model": "string",
+        "max_tokens": "int"
+      }
+    }
+  ]
+}
+
+

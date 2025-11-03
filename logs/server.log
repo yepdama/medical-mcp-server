@@ -1,0 +1,82 @@
+2025-11-01 13:22:05,698 INFO [main] Starting MCP server on 0.0.0.0:8000 (reload=False)
+2025-11-01 13:31:46,895 INFO [main] Starting MCP server on 0.0.0.0:8000 (reload=False)
+2025-11-01 13:34:04,862 INFO [main] Starting MCP server on 0.0.0.0:8000 (reload=False)
+2025-11-01 13:34:20,115 INFO [mcp_server] Manifest requested
+2025-11-01 13:34:25,313 INFO [mcp_server] Execute requested: tool=openai_chat session_id=test-session-1 request_id=None
+2025-11-01 13:34:25,314 INFO [mcp_server] Execute started: call_id=03431c1a-1522-451c-9a28-1926439ae1b4 task=1777286774496
+2025-11-01 13:34:25,316 INFO [mcp_server] Tool running: call_id=03431c1a-1522-451c-9a28-1926439ae1b4 tool=openai_chat
+2025-11-01 13:34:27,496 INFO [httpx] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-11-01 13:34:27,594 INFO [mcp_server] Tool finished: call_id=03431c1a-1522-451c-9a28-1926439ae1b4 tool=openai_chat tokens=2 chars=6
+2025-11-01 13:34:38,168 WARNING [mcp_server] Auth failed: missing or malformed Authorization header
+2025-11-01 13:34:38,472 WARNING [mcp_server] Auth failed: missing or malformed Authorization header
+2025-11-01 13:34:56,819 INFO [mcp_server] Cancel all requested: count=0
+2025-11-01 13:35:17,829 INFO [mcp_server] Execute requested: tool=openai_chat session_id=integration-test request_id=None
+2025-11-01 13:35:17,830 INFO [mcp_server] Execute started: call_id=31e7df93-7a5c-4162-ad63-c00ca758c2bb task=1777298670176
+2025-11-01 13:35:17,832 INFO [mcp_server] Tool running: call_id=31e7df93-7a5c-4162-ad63-c00ca758c2bb tool=openai_chat
+2025-11-01 13:35:18,616 INFO [openai._base_client] Retrying request to /chat/completions in 0.484466 seconds
+2025-11-01 13:35:20,536 INFO [httpx] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-11-01 13:35:20,749 INFO [mcp_server] Tool finished: call_id=31e7df93-7a5c-4162-ad63-c00ca758c2bb tool=openai_chat tokens=8 chars=8
+2025-11-01 13:35:24,109 INFO [mcp_server] Stream opened: call_id=31e7df93-7a5c-4162-ad63-c00ca758c2bb
+2025-11-01 13:35:24,110 INFO [mcp_server] Stream closed: call_id=31e7df93-7a5c-4162-ad63-c00ca758c2bb reason=final
+2025-11-01 13:35:29,236 INFO [mcp_server] Execute requested: tool=invalid_tool session_id=None request_id=None
+2025-11-01 13:35:29,236 INFO [mcp_server] Execute started: call_id=41b3da87-1588-4f51-ac76-651e2eed58ef task=1777298672112
+2025-11-01 13:35:29,237 INFO [mcp_server] Tool running: call_id=41b3da87-1588-4f51-ac76-651e2eed58ef tool=invalid_tool
+2025-11-01 13:35:29,237 WARNING [mcp_server] Unknown tool requested: tool=invalid_tool call_id=41b3da87-1588-4f51-ac76-651e2eed58ef
+2025-11-01 16:14:13,072 INFO [main] Starting MCP server on 0.0.0.0:8000 (reload=False)
+2025-11-01 16:14:46,423 INFO [main] Starting MCP server on 0.0.0.0:8000 (reload=False)
+2025-11-01 16:15:38,457 INFO [main] Starting MCP server on 0.0.0.0:8000 (reload=False)
+2025-11-01 16:15:44,923 INFO [main] Starting MCP server on 0.0.0.0:8000 (reload=False)
+2025-11-01 16:16:00,041 INFO [main] Starting MCP server on 0.0.0.0:8000 (reload=False)
+2025-11-01 16:16:41,004 INFO [main] Starting MCP server on 0.0.0.0:8001 (reload=False)
+2025-11-01 16:17:00,883 INFO [middleware] Request: GET /readyz from 127.0.0.1
+2025-11-01 16:17:00,885 INFO [middleware] Response: GET /readyz - Status: 200 - Duration: 0.002s
+2025-11-01 16:17:00,936 INFO [middleware] Request: GET /favicon.ico from 127.0.0.1
+2025-11-01 16:17:00,938 INFO [middleware] Response: GET /favicon.ico - Status: 404 - Duration: 0.002s
+2025-11-01 16:17:08,947 INFO [middleware] Request: GET /healthz from 127.0.0.1
+2025-11-01 16:17:08,948 INFO [middleware] Response: GET /healthz - Status: 200 - Duration: 0.001s
+2025-11-01 16:18:09,770 INFO [mcp_server] Execute requested: tool=openai_chat session_id=poc-convo-1 request_id=31b46c43-6419-4ab7-ada2-26e2666c5a78
+2025-11-01 16:18:09,771 INFO [mcp_server] Execute started: call_id=d0760321-7b47-4d08-a874-883021857df6 task=1777298673344
+2025-11-01 16:18:09,772 INFO [mcp_server] Tool running: call_id=d0760321-7b47-4d08-a874-883021857df6 tool=openai_chat
+2025-11-01 16:18:09,926 INFO [openai._base_client] Retrying request to /chat/completions in 0.400872 seconds
+2025-11-01 16:18:11,677 INFO [openai._base_client] Retrying request to /chat/completions in 0.762052 seconds
+2025-11-01 16:18:13,756 INFO [httpx] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-11-01 16:18:16,460 INFO [mcp_server] Tool finished: call_id=d0760321-7b47-4d08-a874-883021857df6 tool=openai_chat tokens=111 chars=598
+2025-11-01 16:18:50,222 INFO [mcp_server] Stream opened: call_id=d0760321-7b47-4d08-a874-883021857df6
+2025-11-01 16:18:50,228 INFO [mcp_server] Stream closed: call_id=d0760321-7b47-4d08-a874-883021857df6 reason=final
+2025-11-01 16:20:05,545 INFO [mcp_server] Execute requested: tool=openai_chat session_id=poc-convo-1 request_id=cf4d5ea2-c6d6-4fec-8a31-0724df51fbbb
+2025-11-01 16:20:05,546 INFO [mcp_server] Execute started: call_id=520e3da7-5d41-41af-b2ad-4a794ec0a4f2 task=1777296702144
+2025-11-01 16:20:05,547 INFO [mcp_server] Tool running: call_id=520e3da7-5d41-41af-b2ad-4a794ec0a4f2 tool=openai_chat
+2025-11-01 16:20:05,645 INFO [openai._base_client] Retrying request to /chat/completions in 0.472076 seconds
+2025-11-01 16:20:08,326 INFO [httpx] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-11-01 16:20:10,735 INFO [mcp_server] Tool finished: call_id=520e3da7-5d41-41af-b2ad-4a794ec0a4f2 tool=openai_chat tokens=94 chars=489
+2025-11-01 16:20:45,597 INFO [mcp_server] Stream opened: call_id=520e3da7-5d41-41af-b2ad-4a794ec0a4f2
+2025-11-01 16:20:45,600 INFO [mcp_server] Stream closed: call_id=520e3da7-5d41-41af-b2ad-4a794ec0a4f2 reason=final
+2025-11-01 16:22:16,443 INFO [main] Starting MCP server on 0.0.0.0:8001 (reload=False)
+2025-11-01 16:22:31,891 INFO [mcp_server] Execute requested: tool=openai_chat session_id=poc-convo-1 request_id=test-123
+2025-11-01 16:22:31,891 INFO [mcp_server] Execute started: call_id=3046d825-34cc-4f43-8a2b-9e9fe2d55d22 task=1777298671584
+2025-11-01 16:22:31,894 INFO [mcp_server] Tool running: call_id=3046d825-34cc-4f43-8a2b-9e9fe2d55d22 tool=openai_chat
+2025-11-01 16:22:33,116 INFO [httpx] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-11-01 16:22:35,308 INFO [mcp_server] Tool finished: call_id=3046d825-34cc-4f43-8a2b-9e9fe2d55d22 tool=openai_chat tokens=116 chars=537
+2025-11-01 16:22:58,844 INFO [mcp_server] Execute requested: tool=openai_chat session_id=poc-convo-1 request_id=5f175307-2683-41d0-8a87-ce81d11b7800
+2025-11-01 16:22:58,845 INFO [mcp_server] Execute started: call_id=f300ab52-f752-4959-913e-c898ed10f74b task=1777298676512
+2025-11-01 16:22:58,847 INFO [mcp_server] Tool running: call_id=f300ab52-f752-4959-913e-c898ed10f74b tool=openai_chat
+2025-11-01 16:22:59,792 INFO [httpx] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-11-01 16:23:01,944 INFO [mcp_server] Tool finished: call_id=f300ab52-f752-4959-913e-c898ed10f74b tool=openai_chat tokens=86 chars=450
+2025-11-01 16:23:12,978 INFO [mcp_server] Execute requested: tool=openai_chat session_id=poc-convo-1 request_id=227b726e-0f06-4e6d-99e6-671152223426
+2025-11-01 16:23:12,978 INFO [mcp_server] Execute started: call_id=87c01fd8-ed3e-4e1a-bf3f-3aeffa506795 task=1777298672288
+2025-11-01 16:23:12,979 INFO [mcp_server] Tool running: call_id=87c01fd8-ed3e-4e1a-bf3f-3aeffa506795 tool=openai_chat
+2025-11-01 16:23:13,631 INFO [httpx] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-11-01 16:23:15,425 INFO [mcp_server] Tool finished: call_id=87c01fd8-ed3e-4e1a-bf3f-3aeffa506795 tool=openai_chat tokens=116 chars=537
+2025-11-01 16:24:19,708 INFO [main] Starting MCP server on 0.0.0.0:8001 (reload=False)
+2025-11-01 16:25:10,820 INFO [mcp_server] Execute requested: tool=openai_chat session_id=poc-convo-1 request_id=1bb15894-a9bc-44ba-8580-e99c4e801770
+2025-11-01 16:25:10,820 INFO [mcp_server] Execute started: call_id=ff5982ba-b483-43e8-b99f-8afff25e3ae5 task=1777298674928
+2025-11-01 16:25:10,821 INFO [mcp_server] Tool running: call_id=ff5982ba-b483-43e8-b99f-8afff25e3ae5 tool=openai_chat
+2025-11-01 16:25:11,831 INFO [httpx] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-11-01 16:25:17,062 INFO [mcp_server] Tool finished: call_id=ff5982ba-b483-43e8-b99f-8afff25e3ae5 tool=openai_chat tokens=281 chars=1289
+2025-11-01 16:27:48,451 INFO [mcp_server] Execute requested: tool=openai_chat session_id=poc-convo-1 request_id=556fcec4-dfe6-47c8-a873-82ee24a02440
+2025-11-01 16:27:48,451 INFO [mcp_server] Execute started: call_id=8997912e-7648-4782-9703-0adb055df4e5 task=1777298673696
+2025-11-01 16:27:48,452 INFO [mcp_server] Tool running: call_id=8997912e-7648-4782-9703-0adb055df4e5 tool=openai_chat
+2025-11-01 16:27:49,276 INFO [httpx] HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-11-01 16:27:54,099 INFO [mcp_server] Tool finished: call_id=8997912e-7648-4782-9703-0adb055df4e5 tool=openai_chat tokens=210 chars=1004
+2025-11-01 16:28:14,688 INFO [mcp_server] Stream opened: call_id=8997912e-7648-4782-9703-0adb055df4e5
+2025-11-01 16:28:14,702 INFO [mcp_server] Stream closed: call_id=8997912e-7648-4782-9703-0adb055df4e5 reason=final
